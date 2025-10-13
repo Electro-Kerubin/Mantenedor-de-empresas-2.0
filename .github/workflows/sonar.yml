@@ -8,23 +8,23 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  build:
-    name: Build and Analyze
+  sonarcloud:
+    name: Analyze with SonarCloud
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Necesario para análisis completo de SonarCloud
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies (skip scripts)
+        run: npm ci --ignore-scripts
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@b16d2601a6b948e2fb26f3772276581f31daa7cd
