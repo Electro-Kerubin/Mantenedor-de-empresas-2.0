@@ -27,3 +27,4 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@ba3875ecf642b2129de2b589510c81a8b53dbf4e
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
