@@ -22,7 +22,7 @@ test.describe('Crear Empresas', () => {
     await page.setViewportSize({ width: 1680, height: 1050 });
     await apis.guardarUsuario({cargoId: '1'})
     await page.goto(`${process.env.BASE_URL}/auth`);
-    // await util.segundoLogin();
+    await util.segundoLogin();
     await expect(page).toHaveURL(/private\/mantenedor-empresa/);
   });
 

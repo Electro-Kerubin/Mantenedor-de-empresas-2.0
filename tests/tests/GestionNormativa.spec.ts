@@ -32,7 +32,7 @@ test.describe('Finanzas', () => {
             await apis.guardarUsuario({ cargoId: '9' });
             await page.goto(`${process.env.BASE_URL}/auth`);
             const util = new Util(page);
-            // await util.segundoLogin();
+            await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
             });
 
