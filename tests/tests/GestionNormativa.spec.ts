@@ -37,6 +37,7 @@ test.describe('Finanzas', () => {
             });
 
         test('Jefe de área | Solo puede visualizar los Datos Bancarios en Información Financiera para Cliente OTIC-Proveedor y Proveedor', async ({page}) => {
+            
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedor();
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedorReparto();
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
