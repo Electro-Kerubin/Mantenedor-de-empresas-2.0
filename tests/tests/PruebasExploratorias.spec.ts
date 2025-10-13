@@ -42,9 +42,9 @@ test.describe('Pruebas Exploratorias', () => {
       // const crearEmpresa = new CrearEmpresa(page);
       // const rutEmpresa = generarRUT();
       await page.goto(`${process.env.BASE_URL}/private/crear-empresa`); // cambiar cuando se complete la edicion
-      await expect(page).toHaveURL(/private\/crear-empresa/); // cambiar cuando se complete la edicion
+      await expect.soft(page).toHaveURL(/private\/crear-empresa/); // cambiar cuando se complete la edicion
       await crearEmpresa.autoseleccionarOficinaRMOTIC({rutEmpresa: rutEmpresa, tipoEmpresa: 'CLIENTE', tipoClasificacion: 'CLIENTE OTIC'}); // cambiar cuando se complete la edicion
-      await expect(page.getByRole('tabpanel').locator('select').nth(4).locator('option:checked')).toHaveText('Oficina RM OTIC', {timeout: 100});
+      await expect.soft(page.getByRole('tabpanel').locator('select').nth(4).locator('option:checked')).toHaveText('Oficina RM OTIC', {timeout: 100});
     });
 
     test('Sucursal | Los interlocutores se multiplican en la sucursal principal cuando se edita el "tipo de contacto" o "email" del usuario', async({ page }) => {
@@ -62,8 +62,8 @@ test.describe('Pruebas Exploratorias', () => {
       const ruts = await prueba.replicarContactoOTICASucursales({rutEmpresa: rutEmpresa, tipoEmpresa: 'CLIENTE', tipoClasificacion: 'CLIENTE OTIC'});
 
       for (let i = 0; i <= ruts.length; i++) {
-        expect(ruts[i]).not.toBeNull();
-        expect(ruts[i]).not.toBe('');
+        expect.soft(ruts[i]).not.toBeNull();
+        expect.soft(ruts[i]).not.toBe('');
       }
 
     });
@@ -81,8 +81,8 @@ test.describe('Pruebas Exploratorias', () => {
 
     test('Sucursal | Ocultar usuarios tipos "ejecutivo consultor" y "asistente comercial" en los contactos de las sucursales', async ({page}) => {
       await prueba.verificarOcultarEjecutivoConsultorYAsistenteComercial({rutEmpresa: rutEmpresa, tipoEmpresa: 'CLIENTE', tipoClasificacion: 'CLIENTE OTIC'});
-      await expect( page.getByRole('cell', { name: 'Ejecutivo Consultor', exact: true }) ).toHaveCount(0 , { timeout: 500 });
-      await expect( page.getByRole('cell', { name: 'Asistente Comercial', exact: true }) ).toHaveCount(0 , { timeout: 500 });
+      await expect.soft( page.getByRole('cell', { name: 'Ejecutivo Consultor', exact: true }) ).toHaveCount(0 , { timeout: 500 });
+      await expect.soft( page.getByRole('cell', { name: 'Asistente Comercial', exact: true }) ).toHaveCount(0 , { timeout: 500 });
     });
 
     test('Crear | Contacto OTIC Sucursal | Sucursales replican los datos de la sucursal principal', async({page}) => {
@@ -91,8 +91,8 @@ test.describe('Pruebas Exploratorias', () => {
       console.log('ruts: ' + ruts);
 
       for (let i = 0; i <= ruts.length; i++) {
-        expect(ruts[i]).not.toBe('17025167-9');
-        expect(ruts[i]).not.toBe('16034689-2');
+        expect.soft(ruts[i]).not.toBe('17025167-9');
+        expect.soft(ruts[i]).not.toBe('16034689-2');
       }
 
     });
