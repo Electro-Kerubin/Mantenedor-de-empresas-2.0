@@ -26,10 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # (Opcional) Ejecutar tus pruebas Playwright antes del análisis
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=line || true
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@b16d2601a6b948e2fb26f3772276581f31daa7cd
         env:
