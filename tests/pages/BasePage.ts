@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 
 export class BasePage {
@@ -47,9 +47,22 @@ export class BasePage {
         await input.fill(valor);
     }
 
-    async setDropdownValue(optionValue: string, locatorId: string, name?: string) {
-        const combo = this.page.locator(`${locatorId}`).getByRole('combobox', { name: `${name}` });
-        await combo.click();
+    async setDropdownValue({optionValue, locatorId, name, nthValue}:{optionValue: string, locatorId?: string, name?: string, nthValue?: number}) {
+        
+        if (locatorId) {
+            const combo = this.page.locator(`${locatorId}`).getByRole('combobox', { name: `${name}` });
+            await combo.click();
+        } else if(!locatorId && nthValue !== undefined) {
+            const combo = this.page.getByRole('combobox', { name: `${name}` }).nth(nthValue);
+            await expect(combo).toBeVisible();
+            await expect(combo).toBeEnabled({ timeout: 10000 });
+            await combo.click();
+        } else {
+            const combo = this.page.getByRole('combobox', { name: `${name}` });
+            await combo.click();
+        }
+        
+        
 
         await this.page.locator('.p-dropdown-panel:visible').getByRole('option', { name: `${optionValue}`, exact: true }).click();
     }

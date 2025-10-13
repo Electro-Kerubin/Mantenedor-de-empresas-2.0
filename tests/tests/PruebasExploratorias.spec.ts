@@ -10,7 +10,7 @@ import { APIs } from "../pages/APIs";
 
 dotenv.config();
 
-test.describe('Crear Empresas', () => {
+test.describe('Pruebas Exploratorias', () => {
 
   let crearEmpresa: CrearEmpresa;
   let prueba: Prueba;
@@ -107,5 +107,39 @@ test.describe('Crear Empresas', () => {
         expect(ruts[i]).toBe('');
       }
 
-    })
+    });
+
+    test('Crear | Sucursales | La sucursal principal solo trae el ultimo interlocutor agregado', async ({page}) => {
+      
+      const cantidadFilas = await prueba.verificarContactosEnSucursalPrincipal({rutEmpresa: rutEmpresa, tipoEmpresa: 'CLIENTE', tipoClasificacion:'CLIENTE OTIC'});
+      console.log('Cantidad de filas: ', cantidadFilas);
+      expect(cantidadFilas).toBeGreaterThan(1);
+      
+    });
+
+    test('Crear | Contactos OTIC Sucursal | Datos de contactos otic sucursal desaparecen cuando las sucursales fueron agregadas de forma manual', async({page}) => {
+      const {
+          ruts,
+          agentesZonales,
+          rutsPostCreacion,
+          agentesZonalesPostCreacion
+        } = await prueba.verificarPersistenciaDatosEnSucursalesAgregadasManualContactoOTIC({
+          rutEmpresa: rutEmpresa,
+          tipoEmpresa: 'CLIENTE',
+          tipoClasificacion: 'CLIENTE OTIC'
+        });
+
+        console.log('Ruts iniciales:', ruts);
+        console.log('Agentes zonales:', agentesZonales);
+        console.log('Ruts post creación:', rutsPostCreacion);
+        console.log('Agentes zonales post creación:', agentesZonalesPostCreacion);
+
+        await expect.soft(rutsPostCreacion, 'Los RUTs no son iguales después de la creación')
+        .toEqual(ruts);
+
+        await expect.soft(agentesZonalesPostCreacion, 'Los agentes zonales no son iguales después de la creación')
+        .toEqual(agentesZonales);
+      });
+
+            
 });

@@ -11,7 +11,7 @@ import { GestionNormativa } from "../pages/GestionNormativa";
 
 dotenv.config();
 
-test.describe('Finanzas', () => {
+test.describe('Gestion Normativa', () => {
 
     let rutEmpresa: string;
     let gestionNormativa: GestionNormativa;
@@ -108,6 +108,8 @@ test.describe('Finanzas', () => {
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedorReparto();
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
         });
+
+        
 
     });
 

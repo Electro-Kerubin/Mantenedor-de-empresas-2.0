@@ -77,7 +77,7 @@ export class Prueba extends BasePage{
         });
         await this.crearEmpresa.datosEmpresa(tipoEmpresa);
 
-        await this.crearEmpresa.agregarInterlocutorManual();
+        await this.crearEmpresa.agregarInterlocutorManual({});
         await this.btnSiguiente();
         await this.btnAtras();
 
@@ -186,6 +186,108 @@ export class Prueba extends BasePage{
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() ); 
 
             return ruts;
+
+        }
+
+        async verificarContactosEnSucursalPrincipal({rutEmpresa, tipoEmpresa, tipoClasificacion}: {rutEmpresa: string, tipoEmpresa: string, tipoClasificacion:string}) {
+            await this.crearEmpresa.goToCrearEmpresa();
+            await this.page.waitForLoadState("domcontentloaded");
+            await this.page.waitForURL(/private\/crear-empresa/);
+            await this.crearEmpresa.clasificacionEmpresa({
+                rutEmpresa: rutEmpresa,
+                tipoCliente: tipoEmpresa,
+                tipoClasificacion: tipoClasificacion,
+            });
+            await this.crearEmpresa.datosEmpresa(tipoEmpresa);
+            await this.crearEmpresa.agregarInterlocutorManual({});
+            await this.crearEmpresa.agregarInterlocutorManual({
+                tipoContacto: 'Retiro del Cheque',
+                nombreContacto: 'Persona 02',
+                rutContacto: '22175707-6',
+                cargoContacto: 'Cargo 02',
+                telefonoContacto: '123456789',
+                celularContacto: '987654321',
+                emailContacto: 'correo02@correo.com',
+                observaciones: 'obs 01'
+            });
+            await this.btnSiguiente();
+            await this.page.getByRole('button', { name: '', exact: true }).click();
+            
+            const filas = this.page.getByRole('cell', { name: 'Contacto Sucursal Descargar' });
+            const cantidadFilas = await filas.count();
+            return cantidadFilas;
+
+        }
+
+        async verificarPersistenciaDatosEnSucursalesAgregadasManualContactoOTIC({rutEmpresa, tipoEmpresa, tipoClasificacion}:{rutEmpresa: string, tipoEmpresa: string, tipoClasificacion:string}) {
+            const ruts = [];
+            const agentesZonales = [];
+            const rutsPostCreacion = [];
+            const agentesZonalesPostCreacion = [];
+            
+            await this.crearEmpresa.goToCrearEmpresa();
+            await this.page.waitForLoadState("domcontentloaded");
+            await this.page.waitForURL(/private\/crear-empresa/);
+            await this.crearEmpresa.clasificacionEmpresa({
+                rutEmpresa: rutEmpresa,
+                tipoCliente: tipoEmpresa,
+                tipoClasificacion: tipoClasificacion,
+            });
+            await this.crearEmpresa.datosEmpresa(tipoEmpresa);
+            await this.btnSiguiente();
+            await this.crearEmpresa.agregarSucursalManual({clasificacionEmpresa: 'Cuenta no Franquiciable'});
+            await this.crearEmpresa.agregarSucursalManual({clasificacionEmpresa: 'Cuenta no Franquiciable', bloqueoCredito: 'CUENTA NORMAL', bloqueoMasivo: '1000', ciudad: 'Peñalolen', nombreSucursal: 'Sucursal manual 02'});
+            await this.btnSiguiente();
+            await this.crearEmpresa.informacionFinanciera(tipoEmpresa);
+            await this.crearEmpresa.contactosOTIC({conEmpresa: true, conSucursal: false});
+            await this.btnAtras();
+            await this.page.getByRole('button', { name: 'Sucursales', exact: true }).click();
+            
+            await this.setContacto('Marlene Urtubia Maldonado', '#pn_id_25');
+            await this.setContacto('Carlos Segovia Zuñiga', '#pn_id_27');
+            await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal sucursal principal');
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonales.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+            
+            await this.selectSucursalOTIC('Sucursal manual test');
+            await this.setContacto('Ana Andaur Adriazola', '#pn_id_25');
+            await this.setContacto('Carlos Miranda A.', '#pn_id_27');
+            await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal primera sucursal');
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonales.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+
+            await this.selectSucursalOTIC('Sucursal manual 02');
+            await this.setContacto('Daniela Gutierrez Troncoso', '#pn_id_25');
+            await this.setContacto('Francisca Yañez Escobar', '#pn_id_27');
+            await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal segunda sucursal');
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonales.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+
+            await this.btnSiguiente();
+            await this.crearEmpresa.guardar();
+            
+            await this.editarEmpresa.buscarEmpresa(rutEmpresa);
+            await this.page.getByRole('tab', { name: 'Contactos OTIC' }).click();
+            await this.page.getByRole('button', { name: 'Sucursales', exact: true }).click();
+
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonalesPostCreacion.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+
+            await this.selectSucursalOTIC('Sucursal manual test');
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonalesPostCreacion.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+
+            await this.selectSucursalOTIC('Sucursal manual 02');
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
+            await rutsPostCreacion.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
+            await agentesZonalesPostCreacion.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
+
+            return { ruts, agentesZonales, rutsPostCreacion, agentesZonalesPostCreacion };
 
         }
 

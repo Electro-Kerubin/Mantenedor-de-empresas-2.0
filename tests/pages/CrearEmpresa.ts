@@ -35,11 +35,11 @@ export class CrearEmpresa extends BasePage {
         // await this.page.getByRole('combobox', { name: 'Seleccione Tipo de Empresa' }).click();
 
         if (tipoCliente === 'CLIENTE') {
-            await this.setDropdownValue('CLIENTE', '#tipoEmpresa', 'Seleccione Tipo de Empresa');
+            await this.setDropdownValue({optionValue: 'CLIENTE', locatorId: '#tipoEmpresa', name: 'Seleccione Tipo de Empresa'});
         } else if (tipoCliente === 'PROVEEDOR') {
-            await this.setDropdownValue('PROVEEDOR', '#tipoEmpresa', 'Seleccione Tipo de Empresa');
+            await this.setDropdownValue({optionValue: 'PROVEEDOR', locatorId: '#tipoEmpresa', name: 'Seleccione Tipo de Empresa'});
         } else if (tipoCliente === 'CLIENTE-PROVEEDOR') {
-            await this.setDropdownValue('CLIENTE-PROVEEDOR', '#tipoEmpresa', 'Seleccione Tipo de Empresa');
+            await this.setDropdownValue({optionValue: 'CLIENTE-PROVEEDOR', locatorId: '#tipoEmpresa', name: 'Seleccione Tipo de Empresa'});
         }
 
         if (tipoClasificacion === 'CLIENTE OTIC') {
@@ -71,12 +71,12 @@ export class CrearEmpresa extends BasePage {
                 await this.page.getByRole('textbox', { name: 'Nombre / Razón Social' }).fill(generarNombre('CLIENTE'));
             }
             // await this.page.getByRole('textbox', { name: '-9' }).fill(generarRUT());
-            await this.setDropdownValue('AGUAS ANDINAS', '#pn_id_15', 'Seleccione Nombre Holding');
+            await this.setDropdownValue({optionValue: 'AGUAS ANDINAS', locatorId: '#pn_id_15', name: 'Seleccione Nombre Holding'});
             await this.page.getByRole('textbox', { name: 'Ingrese Nombre de Cliente' }).fill('Cliente interno Prueba');
             await this.page.getByRole('textbox', { name: 'Ingrese a qué se dedica' }).fill('Pruebas test');
             await this.page.getByRole('textbox', { name: 'Ciudad' }).fill('Santiago');
-            await this.setDropdownValue('REGION METROPOLITANA', '#pn_id_10', 'Selecciona...');
-            await this.setDropdownValue('LA FLORIDA', '#pn_id_12', 'Selecciona...')
+            await this.setDropdownValue({optionValue:'REGION METROPOLITANA', locatorId: '#pn_id_10', name: 'Selecciona...'});
+            await this.setDropdownValue({optionValue: 'LA FLORIDA', locatorId: '#pn_id_12', name: 'Selecciona...'})
             await this.page.getByRole('textbox', { name: 'Dirección' }).fill('Av. Vicuña Mackenna 1234');
             await this.page.getByRole('tabpanel').locator('select').nth(3).selectOption('Zona Metropolitana');
             await this.page.getByRole('tabpanel').locator('select').nth(4).selectOption('Oficina RM OTIC');
@@ -103,8 +103,8 @@ export class CrearEmpresa extends BasePage {
             await this.page.getByRole('textbox', { name: '-9' }).fill(generarRUT());
 
             await this.page.getByRole('textbox', { name: 'Ciudad' }).fill('Santiago');
-            await this.setDropdownValue('REGION METROPOLITANA', '#pn_id_10', 'Selecciona...');
-            await this.setDropdownValue('LA FLORIDA', '#pn_id_12', 'Selecciona...')
+            await this.setDropdownValue({optionValue: 'REGION METROPOLITANA', locatorId: '#pn_id_10', name: 'Selecciona...'});
+            await this.setDropdownValue({optionValue: 'LA FLORIDA', locatorId: '#pn_id_12', name: 'Selecciona...'})
             await this.page.getByRole('textbox', { name: 'Dirección' }).fill('Av. Vicuña Mackenna 1234');
             await this.page.getByRole('textbox', { name: 'Ingresar Email' }).fill('correoprueba@gmail.com');
             await this.page.getByRole('textbox', { name: '+569' }).fill('56912345678');
@@ -189,7 +189,7 @@ export class CrearEmpresa extends BasePage {
         await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
     }
 
-    async informacionFinanciera(tipoCliente?: string) {
+    async informacionFinanciera(tipoCliente: string) {
         if (tipoCliente === 'CLIENTE' || tipoCliente === 'CLIENTE-PROVEEDOR') {
             await this.page.getByRole('combobox').first().selectOption('2.401 a 25.000 UF');
             await this.page.getByRole('textbox', { name: '% RAI' }).fill('11111111111');
@@ -343,18 +343,80 @@ export class CrearEmpresa extends BasePage {
     }
 
 
-    async agregarInterlocutorManual() {
+    async agregarInterlocutorManual({ 
+        tipoContacto,
+        nombreContacto,
+        rutContacto,
+        cargoContacto,
+        telefonoContacto,
+        celularContacto,
+        emailContacto,
+        observaciones
+    } : 
+    {
+        tipoContacto?: string,
+        nombreContacto?: string,
+        rutContacto?: string,
+        cargoContacto?:string,
+        telefonoContacto?: string,
+        celularContacto?: string,
+        emailContacto?: string,
+        observaciones?: string
+    }) {
+
         await this.page.getByRole('button', { name: ' Agregar Contactos' }).click();
-        await this.page.getByRole('combobox').selectOption('Contacto Comercial');
-        await this.page.getByRole('textbox', { name: 'Nombre y Apellidos *' }).fill('Interlocutor prueba');
-        await this.page.getByRole('textbox', { name: 'RUT' }).fill('23610642-k');
-        await this.page.getByRole('textbox', { name: 'Cargo' }).fill('Cargo TEST');
-        await this.page.getByRole('textbox', { name: 'Teléfono' }).fill('911112222')
-        await this.page.getByRole('textbox', { name: 'Celular' }).fill('933334444');
-        await this.page.getByRole('textbox', { name: 'email@contacto.cl' }).fill('correo@prueba.com');
-        await this.page.getByRole('textbox', { name: 'Ingrese observaciones' }).fill('Esto es una observacion de prueba')
+        await this.page.getByRole('combobox').selectOption(tipoContacto ?? 'Contacto Comercial');
+        await this.page.getByRole('textbox', { name: 'Nombre y Apellidos *' }).fill(nombreContacto ?? 'Interlocutor prueba');
+        await this.page.getByRole('textbox', { name: 'RUT' }).fill(rutContacto ?? '23610642-k');
+        await this.page.getByRole('textbox', { name: 'Cargo' }).fill(cargoContacto ?? 'Cargo TEST');
+        await this.page.getByRole('textbox', { name: 'Teléfono' }).fill(telefonoContacto ?? '911112222');
+        await this.page.getByRole('textbox', { name: 'Celular' }).fill(celularContacto ?? '933334444');
+        await this.page.getByRole('textbox', { name: 'email@contacto.cl' }).fill(emailContacto ?? 'correo@prueba.com');
+        await this.page.getByRole('textbox', { name: 'Ingrese observaciones' }).fill(observaciones ?? 'Esto es una observacion de prueba');
         await this.page.getByRole('button', { name: 'Guardar' }).click();
     }
+
+    async agregarSucursalManual({
+        clasificacionEmpresa,
+        bloqueoCredito,
+        bloqueoMasivo,
+        nombreSucursal,
+        ciudad,
+    }:{
+        clasificacionEmpresa: string,
+        bloqueoCredito?: string,
+        bloqueoMasivo?: string,
+        nombreSucursal?: string,
+        ciudad?: string,
+    }) { 
+        await this.page.getByRole('button', { name: ' Agregar Sucursal' }).click();
+        if (clasificacionEmpresa === 'Cuenta no Franquiciable' || clasificacionEmpresa === 'Intermediación Franquicia Tributaria' || clasificacionEmpresa === 'Servicios DO' || clasificacionEmpresa === 'Servicios Consultoría') {
+            await this.page.getByRole('checkbox', { name: 'Cliente OTIC' }).click();
+            //mejorar a futuro
+            await this.page.getByRole('checkbox', { name: 'Cuenta no Franquiciable' }).click();
+        } else if(clasificacionEmpresa === 'Cliente Reparto') {
+            await this.page.getByRole('checkbox', { name: 'Cliente Reparto' }).click();
+        }
+        await this.btnSiguiente();
+        
+        await this.page.locator('form select').first().selectOption(bloqueoCredito ?? 'CUENTA EXCEDENTES');
+        await this.page.locator('form select').nth(1).selectOption(bloqueoMasivo ?? '1000');
+        await this.page.getByRole('textbox', { name: 'Nombre Sucursal *' }).fill(nombreSucursal ?? 'Sucursal manual test');
+        await this.setDropdownValue({optionValue: 'CHILE', name: 'País'});
+        await this.page.getByRole('textbox', { name: 'Ciudad' }).fill(ciudad ?? 'Santiago');
+        await this.page.getByRole('combobox', { name: 'Selecciona...' }).first().click();
+        await this.page.locator('.p-dropdown-panel:visible').getByRole('option', { name: 'REGION METROPOLITANA', exact: true }).click();
+        await this.page.getByRole('combobox', { name: 'Selecciona...' }).last().click();
+        await this.page.locator('.p-dropdown-panel:visible').getByRole('option', { name: 'LAMPA', exact: true }).click();
+        await this.page.getByRole('textbox', { name: 'Dirección' }).fill('Direccion prueba automatica');
+        await this.page.locator('form select').nth(2).selectOption('Zona Metropolitana');
+        await this.page.getByRole('textbox', { name: '+569' }).fill('912341234');
+        await this.page.getByRole('textbox', { name: 'Ingresar Email' }).fill('correoprueba@correo.com');
+
+        await this.page.getByRole('button', { name: 'Agregar sucursal' }).click();
+
+        // await this.page.
+    } 
 
     async persistenciaClasificacionEmpresa(rutEmpresa: string) {
         await expect(this.page.getByRole('textbox', { name: 'RUT Empresa *' })).toHaveValue(rutEmpresa);
@@ -415,7 +477,7 @@ export class CrearEmpresa extends BasePage {
             tipoClasificacion: tipoClasificacion,
         });
         await this.datosEmpresa(tipoEmpresa);
-        await this.agregarInterlocutorManual();
+        await this.agregarInterlocutorManual({});
         await this.page.getByRole('cell', { name: 'Icono SVG Activado' }).locator('a').click();
         await this.page.getByRole('combobox').selectOption('Contacto Operaciones');
         await this.page.getByRole('button', { name: 'Guardar' }).click();
@@ -427,4 +489,6 @@ export class CrearEmpresa extends BasePage {
         await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
         await this.page.getByRole('button', { name: '', exact: true }).click();
     }
+
+    
 }

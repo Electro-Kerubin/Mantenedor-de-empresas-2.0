@@ -7,7 +7,7 @@ import { APIs } from "../pages/APIs";
 
 dotenv.config();
 
-test.describe.skip('Crear Empresas', () => {
+test.describe('Crear Empresas', () => {
 
   let apis: APIs;
 
