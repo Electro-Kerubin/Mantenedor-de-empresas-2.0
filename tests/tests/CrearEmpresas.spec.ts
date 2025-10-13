@@ -9,10 +9,6 @@ dotenv.config();
 
 test.describe('Crear Empresas', () => {
 
-  // test.use({
-  //   storageState: undefined,
-  // });
-
   let apis: APIs;
 
   test.beforeEach(async ({ page }) => {
