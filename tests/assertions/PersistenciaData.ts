@@ -1,0 +1,15 @@
+import { Page } from "@playwright/test";
+import { BasePage } from "../pages/BasePage";
+
+
+export class PersistenciaData extends BasePage {
+    
+    constructor(page: Page) {
+        super(page);
+    }
+
+    async assertPersistenciaVisual() {
+        
+    }
+    
+}
