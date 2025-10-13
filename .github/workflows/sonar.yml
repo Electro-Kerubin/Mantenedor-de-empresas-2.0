@@ -11,12 +11,14 @@ jobs:
   build:
     name: Build and Analyze
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Node.js
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necesario para análisis completo de SonarCloud
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -24,10 +26,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Playwright tests (optional)
+      # (Opcional) Ejecutar tus pruebas Playwright antes del análisis
+      - name: Run Playwright tests
         run: npx playwright test --reporter=line || true
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarcloud-github-action@b16d2601a6b948e2fb26f3772276581f31daa7cd
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
