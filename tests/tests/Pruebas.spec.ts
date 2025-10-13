@@ -6,6 +6,7 @@ import { Util } from "../pages/util";
 import { EditarEmpresa } from "../pages/EditarEmpresa";
 import { generarRUT } from "../utils/GeneradorRuts";
 import { Prueba } from "../pages/Pruebas";
+import { APIs } from "../pages/APIs";
 
 dotenv.config();
 
@@ -14,13 +15,16 @@ test.describe('Crear Empresas', () => {
   let crearEmpresa: CrearEmpresa;
   let prueba: Prueba;
   let rutEmpresa: string;
+  let apis: APIs;
 
   test.beforeEach(async ({ page }) => {
     //await page.setViewportSize({ width: 1920, height: 1080 }); // Cambiar cuando se termine la creacion de las pruebas
     crearEmpresa = new CrearEmpresa(page);
     prueba = new Prueba(page);
+    apis = new APIs(page);
     rutEmpresa = generarRUT();
     await page.setViewportSize({ width: 1680, height: 1050 });
+    await apis.guardarUsuario({cargoId: '1'});
     await page.goto(`${process.env.BASE_URL}/auth`);
     const util = new Util(page);
     await util.segundoLogin();

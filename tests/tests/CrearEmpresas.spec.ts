@@ -3,6 +3,7 @@ import { CrearEmpresa } from "../pages/CrearEmpresa";
 import * as dotenv from 'dotenv';
 import { dot } from "node:test/reporters";
 import { Util } from "../pages/util";
+import { APIs } from "../pages/APIs";
 
 dotenv.config();
 
@@ -12,11 +13,15 @@ test.describe('Crear Empresas', () => {
   //   storageState: undefined,
   // });
 
+  let apis: APIs;
+
   test.beforeEach(async ({ page }) => {
     //await page.setViewportSize({ width: 1920, height: 1080 }); // Cambiar cuando se termine la creacion de las pruebas
-    await page.setViewportSize({ width: 1680, height: 1050 });
-    await page.goto(`${process.env.BASE_URL}/auth`);
     const util = new Util(page);
+    apis = new APIs(page);
+    await page.setViewportSize({ width: 1680, height: 1050 });
+    await apis.guardarUsuario({cargoId: '1'})
+    await page.goto(`${process.env.BASE_URL}/auth`);
     // await util.segundoLogin();
     await expect(page).toHaveURL(/private\/mantenedor-empresa/);
   });

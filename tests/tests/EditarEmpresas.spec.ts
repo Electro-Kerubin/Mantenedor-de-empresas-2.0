@@ -4,18 +4,21 @@ import { EditarEmpresa } from "../pages/EditarEmpresa";
 import { generarRUT } from "../utils/GeneradorRuts";
 import { Util } from "../pages/util";
 import * as dotenv from 'dotenv';
+import { APIs } from "../pages/APIs";
 
 dotenv.config();
 
 test.describe('Editar Empresas', () => {
 
-  
+  let apis: APIs;
 
   test.beforeEach(async ({ page }) => {
+    const util = new Util(page);
+    apis = new APIs(page);
     await page.setViewportSize({ width: 1920, height: 1080 }); // Cambiar cuando se termine la creacion de las pruebas
     // await page.setViewportSize({ width: 1680, height: 1050 });
+    await apis.guardarUsuario({cargoId: '1'});
     await page.goto(`${process.env.BASE_URL}/auth`);
-    const util = new Util(page);
     await util.segundoLogin();
     await expect(page).toHaveURL(/private\/mantenedor-empresa/);
   });
