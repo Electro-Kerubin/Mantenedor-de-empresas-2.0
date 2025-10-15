@@ -24,13 +24,13 @@ export class GestionNormativa extends BasePage {
         
         await this.editarEmpresa.buscarEmpresa(rutEmpresa);
         await this.page.getByRole('tab', { name: 'Información Financiera' }).click();
-        await expect(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
-        await expect(this.page.locator('#banco')).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
-        await expect(this.page.getByRole('button', { name: ' 1760312899372_PDF_TEST.pdf' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
+        await expect.soft(this.page.locator('#banco')).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('button', { name: ' 1760312899372_PDF_TEST.pdf' })).toBeDisabled();
     }
 
     async verificarVisualizacionDatosBancariosClienteProveedorReparto() {
@@ -39,27 +39,27 @@ export class GestionNormativa extends BasePage {
 
         await this.editarEmpresa.buscarEmpresa(rutEmpresa);
         await this.page.getByRole('tab', { name: 'Información Financiera' }).click();
-        await expect(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
-        await expect(this.page.locator('#banco')).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
-        await expect(this.page.getByRole('button', { name: ' 1760313873331_PDF_TEST.pdf' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
+        await expect.soft(this.page.locator('#banco')).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('button', { name: ' 1760313873331_PDF_TEST.pdf' })).toBeDisabled();
     }
 
     async verificarVisualizacionDatosBancariosProveedor() {
         await this.page.goto(`${process.env.BASE_URL}/private/mantenedor-empresa`);
-        const rutEmpresa = '12173026-K';
+        const rutEmpresa = '20984464-8	';
 
         await this.editarEmpresa.buscarEmpresa(rutEmpresa);
         await this.page.getByRole('tab', { name: 'Información Financiera' }).click();
-        await expect(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
-        await expect(this.page.locator('#banco')).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
-        await expect(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
-        await expect(this.page.getByRole('button', { name: ' 1760312899372_PDF_TEST.pdf' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('tabpanel').locator('select').nth(2)).toBeDisabled();
+        await expect.soft(this.page.locator('#banco')).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nº Cuenta' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'Nombre' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: '-9' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('textbox', { name: 'email@dominio.cl' })).toBeDisabled();
+        await expect.soft(this.page.getByRole('button', { name: ' 1760374308031_PDF_TEST.pdf' })).toBeDisabled();
     }
 }

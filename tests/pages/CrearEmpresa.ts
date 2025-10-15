@@ -275,28 +275,28 @@ export class CrearEmpresa extends BasePage {
             // Sucursal principal
             await this.setContacto('Daniela Gutierrez Troncoso', '#pn_id_25');
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal Sucursal Principal')
-            await this.setContacto('Giannina Oyanedel Sanchez', '#pn_id_27');
-            await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Viña del Mar');
+            await this.setContacto('Patricia Almonacid Baez', '#pn_id_27');
+            // await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Viña del Mar');
 
             // 1ª Sucursal en el listado
             await this.selectSucursalOTIC('Carga Masiva Sucursal 01');
             await this.setContacto('Ana Andaur Adriazola', '#pn_id_25');
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 1');
-            await this.setContacto('Lorena Reyes Gonzales', '#pn_id_27');
-            await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Talca');
+            await this.setContacto('Alejandra Retamal Diaz', '#pn_id_27');
+            // await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Talca');
 
             // 2ª Sucursal en el listado
             await this.selectSucursalOTIC('Carga Masiva Reparto sucursal 01');
             await this.setContacto('Rodrigo Lampre Emparan', '#pn_id_25');
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 2');
-            await this.setContacto('Susana Belmar Jaime', '#pn_id_27');
+            await this.setContacto('Dannia Morales Munoz', '#pn_id_27');
 
             // 3ª Sucursal en el listado
             await this.selectSucursalOTIC('Sucursal agregada manualmente test');
             await this.setContacto('Enrique Quiroz', '#pn_id_25');
             await this.page.locator('app-contactos-otic-sucursal select').nth(2).selectOption('Oficina Antofagasta');
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 3');
-            await this.setContacto('Francisca Yañez Escobar', '#pn_id_27');
+            await this.setContacto('Michelle Riquelme Alvarez', '#pn_id_27');
         }
         await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
     }

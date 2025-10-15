@@ -164,7 +164,8 @@ export class BasePage {
     }
 
     async btnReplicarASucursales() {
-        await this.page.getByRole('button', { name: 'Replicar a Sucursales' }).click();
+        await this.page.getByRole('button', { name: 'Replicar a Sucursales' }).waitFor({state: 'visible', timeout: 120000});
+        await this.page.getByRole('button', { name: 'Replicar a Sucursales' }).click({timeout: 120000});
     }
 
     async btnGuardarySalir() {
