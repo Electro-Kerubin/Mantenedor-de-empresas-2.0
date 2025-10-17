@@ -45,6 +45,10 @@ test.describe('Finanzas', () => {
       await finanzas.verificarGrilla();
     });
 
+    test('Gerente | Al ingresar con perfil de Finanzas , no te lleva directamente a la Información Financiera', async ({page}) => {
+      await finanzas.verficarAlEditarEmpresaDebeIrDirectoAInformacionFinanciera();
+    });
+
   });
 
   test.describe('Rol: Analista', () => {
@@ -70,6 +74,10 @@ test.describe('Finanzas', () => {
     test('Jefe de área | Al ingresar se visualizan correctamente los filtros y la grilla de empresas', async ({page}) => {
       await finanzas.verificarFiltros();
       await finanzas.verificarGrilla();
+    });
+
+    test('Analista | Al ingresar con perfil de Finanzas , no te lleva directamente a la Información Financiera', async ({page}) => {
+      await finanzas.verficarAlEditarEmpresaDebeIrDirectoAInformacionFinanciera();
     });
 
   });
@@ -100,9 +108,12 @@ test.describe('Finanzas', () => {
       await finanzas.verificarGrilla();
     });
 
-    test('Supervisor | Perfil solo puede editar Datos Bancarios', async ({page}) => {
-      await finanzas.verificarFiltros();
-      await finanzas.verificarGrilla();
+    test('Supervisor | Al ingresar con perfil de Finanzas , no te lleva directamente a la Información Financiera', async ({page}) => {
+      await finanzas.verficarAlEditarEmpresaDebeIrDirectoAInformacionFinanciera();
+    });
+
+    test('(POR HACER) Supervisor | Perfil solo puede editar Datos Bancarios', async ({page}) => {
+      
     });
 
   });

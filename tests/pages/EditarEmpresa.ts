@@ -20,6 +20,9 @@ export class EditarEmpresa extends BasePage {
                 if (await this.page.getByRole('cell', { name: 'Creado' }).isVisible()) {
                     await this.page.getByRole('button', { name: 'Icono SVG' }).click({ timeout: 0 });
                     break;
+                } else if (await this.page.getByRole('cell', { name: 'Completo' }).isVisible()) {
+                    await this.page.getByRole('button', { name: 'Icono SVG' }).click({ timeout: 0 });
+                    break;
                 }
             }
             catch {

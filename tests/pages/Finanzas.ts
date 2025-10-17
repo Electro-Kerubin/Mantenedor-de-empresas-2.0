@@ -1,13 +1,17 @@
 import { Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 import * as dotenv from 'dotenv';
+import { EditarEmpresa } from './EditarEmpresa';
 
 dotenv.config();
 
 export class Finanzas extends BasePage {
 
+    editarEmpresa: EditarEmpresa;
+
     constructor(page: Page) {
         super(page);
+        this.editarEmpresa = new EditarEmpresa(page);
     }
 
     async verificarAccesoFinanzasUI() {
@@ -52,7 +56,20 @@ export class Finanzas extends BasePage {
         await expect(this.page.getByRole('cell', { name: 'Opciones' })).toBeVisible({timeout:1000});
     }
 
-    async perfilSoloPuedeEditarDatosBancarios({tipoEmpresa} : {tipoEmpresa: string}) {
+    async verficarAlEditarEmpresaDebeIrDirectoAInformacionFinanciera() {
         
+        const rutClienteProveedor = '20321616-5';
+        const rutProveedor = '9049547-K';
+
+        await this.editarEmpresa.buscarEmpresa(rutClienteProveedor);
+        await expect.soft(this.page.getByRole('heading', { name: 'Información Financiera' }), {message: 'Cliente-Proveedor no redirecciono a informacion financiera'}).toBeVisible({timeout: 5000});
+        
+        await this.page.goto(`${process.env.BASE_URL}/private/mantenedor-empresa`);
+        await this.editarEmpresa.buscarEmpresa(rutProveedor);
+        await expect.soft(this.page.getByRole('heading', { name: 'Datos Bancarios' }), {message: 'Proveedor no redirecciono a informacion financiera'}).toBeVisible({timeout: 5000});
+    }   
+
+    async perfilSoloPuedeEditarDatosBancarios({tipoEmpresa} : {tipoEmpresa: string}) {
+
     }
 }
