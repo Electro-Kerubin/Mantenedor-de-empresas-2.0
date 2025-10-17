@@ -141,5 +141,12 @@ test.describe('Pruebas Exploratorias', () => {
         .toEqual(agentesZonales);
       });
 
-            
+    test('OME-1528 | Interlocutores | Al editar un contacto se romple regla de anti duplicidad', async ({page}) => {
+      await prueba.verificarDuplicidadInterlocutorAlEditarUnSegundoContacto({
+          rutEmpresa: rutEmpresa,
+          tipoEmpresa: 'CLIENTE',
+          tipoClasificacion: 'CLIENTE OTIC'
+        });
+    });
+
 });

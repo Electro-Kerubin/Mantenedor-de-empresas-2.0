@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { CrearEmpresa } from './CrearEmpresa';
 import { EditarEmpresa } from './EditarEmpresa';
@@ -36,8 +36,8 @@ export class Prueba extends BasePage{
         await this.crearEmpresa.informacionFinanciera(tipoEmpresa);
         if (tipoEmpresa === 'CLIENTE' || tipoEmpresa === 'CLIENTE-PROVEEDOR') {
             //Contacto OTIC EMPRESA
-            await this.setContacto('Marlene Urtubia Maldonado', '#pn_id_22');
-            await this.setContacto('Kay Camus Caro', '#pn_id_24');
+            await this.setContacto({nombreContacto: 'Marlene Urtubia Maldonado', tipoContacto: 'ejecutivo consultor'});
+            await this.setContacto({nombreContacto: 'Lisette Sanchez Riquelme', tipoContacto: 'asistente comercial'});
             await this.page.getByRole('button', { name: 'Replicar a Sucursales' }).click();
             await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
             await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
@@ -243,24 +243,24 @@ export class Prueba extends BasePage{
             await this.btnAtras();
             await this.page.getByRole('button', { name: 'Sucursales', exact: true }).click();
             
-            await this.setContacto('Marlene Urtubia Maldonado', '#pn_id_25');
-            await this.setContacto('Carlos Segovia Zuñiga', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Marlene Urtubia Maldonado', tipoContacto: 'ejecutivo consultor'});
+            await this.setContacto({nombreContacto: 'Alejandra Retamal Diaz', tipoContacto: 'asistente comercial'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal sucursal principal');
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
             await agentesZonales.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
             
             await this.selectSucursalOTIC('Sucursal manual test');
-            await this.setContacto('Ana Andaur Adriazola', '#pn_id_25');
-            await this.setContacto('Carlos Miranda A.', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Ana Andaur Adriazola', tipoContacto: 'ejecutivo consultor'});
+            await this.setContacto({nombreContacto: 'Dannia Morales Munoz', tipoContacto: 'asistente comercial'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal primera sucursal');
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
             await agentesZonales.push(await this.page.getByRole('textbox', { name: 'Agente Zonal' }).inputValue());
 
             await this.selectSucursalOTIC('Sucursal manual 02');
-            await this.setContacto('Daniela Gutierrez Troncoso', '#pn_id_25');
-            await this.setContacto('Francisca Yañez Escobar', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Daniela Gutierrez Troncoso', tipoContacto: 'ejecutivo consultor'});
+            await this.setContacto({nombreContacto: 'Felipe Fernandez Martinez', tipoContacto: 'asistente comercial'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('agente zonal segunda sucursal');
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
@@ -289,6 +289,44 @@ export class Prueba extends BasePage{
 
             return { ruts, agentesZonales, rutsPostCreacion, agentesZonalesPostCreacion };
 
+        }
+
+        async verificarDuplicidadInterlocutorAlEditarUnSegundoContacto({rutEmpresa, tipoEmpresa, tipoClasificacion}: {rutEmpresa: string, tipoEmpresa: string, tipoClasificacion:string}) {
+            await this.crearEmpresa.goToCrearEmpresa();
+            await this.page.waitForLoadState("domcontentloaded");
+            await this.page.waitForURL(/private\/crear-empresa/);
+            await this.crearEmpresa.clasificacionEmpresa({
+                rutEmpresa: rutEmpresa,
+                tipoCliente: tipoEmpresa,
+                tipoClasificacion: tipoClasificacion,
+            });
+            await this.crearEmpresa.datosEmpresa(tipoEmpresa);
+            await this.crearEmpresa.agregarInterlocutorManual({
+                tipoContacto: 'Retiro del Cheque',
+                nombreContacto: 'Persona 01',
+                rutContacto: '22175707-6',
+                cargoContacto: 'Cargo 02',
+                telefonoContacto: '123456789',
+                celularContacto: '987654321',
+                emailContacto: 'correo02@correo.com',
+                observaciones: 'obs 01'
+            });
+            await this.crearEmpresa.agregarInterlocutorManual({
+                tipoContacto: 'Destinatario OC',
+                nombreContacto: 'Persona 01',
+                rutContacto: '22175707-6',
+                cargoContacto: 'Cargo 02',
+                telefonoContacto: '123456789',
+                celularContacto: '987654321',
+                emailContacto: 'correo02@correo.com',
+                observaciones: 'obs 01'
+            });
+
+            await this.page.getByRole('row', { name: 'Persona 01 22175707-6 Destinatario OC Cargo 02 123456789 987654321 correo02@' }).locator('a').click();
+            await this.page.getByRole('combobox').selectOption('Retiro del Cheque');
+
+            await this.page.getByRole('button', { name: 'Guardar' }).click();
+            await expect(this.page.getByRole('cell', { name: 'Retiro del Cheque' }).nth(1), {message: 'Contacto se ha repetido'}).not.toHaveText('Retiro del Cheque', {timeout: 1500});
         }
 
 }
