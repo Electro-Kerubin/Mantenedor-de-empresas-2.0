@@ -174,13 +174,14 @@ export class CrearEmpresa extends BasePage {
         await this.page.getByRole('combobox', { name: 'País' }).click();
         await this.page.getByRole('listbox', { name: 'Option List' }).getByRole('option', { name: /^CHILE$/ }).click();
         await this.page.getByRole('textbox', { name: 'Ciudad' }).fill('Santiago');
-        if (tipoCliente === 'CLIENTE' || tipoCliente === 'CLIENTE-PROVEEDOR') {
-            await this.page.locator('#pn_id_42').getByRole('combobox', { name: 'Selecciona...' }).click();
-        } else if (tipoCliente === 'PROVEEDOR') {
-            await this.page.locator('#pn_id_38').getByRole('combobox', { name: 'Selecciona...' }).click();
-        }
+        // if (tipoCliente === 'CLIENTE' || tipoCliente === 'CLIENTE-PROVEEDOR') {
+        //     await this.page.getByRole('combobox', { name: 'Selecciona...' }).first().click();
+        // } else if (tipoCliente === 'PROVEEDOR') {
+        //     await this.page.getByRole('combobox', { name: 'Selecciona...' }).first().click();
+        // }
+        await this.page.getByRole('combobox', { name: 'Selecciona...' }).first().click();
         await this.page.getByRole('listbox', { name: 'Option List' }).getByRole('option', { name: /^V VALPARAISO$/ }).click();
-        await this.page.getByRole('combobox', { name: 'Selecciona...' }).click();
+        await this.page.getByRole('combobox', { name: 'Selecciona...' }).last().click();
         await this.page.getByRole('listbox', { name: 'Option List' }).getByRole('option', { name: /^QUILPUE$/ }).click();
         await this.page.getByRole('textbox', { name: 'Dirección' }).fill('Av. Prueba 1234');
 
@@ -264,8 +265,8 @@ export class CrearEmpresa extends BasePage {
     async contactosOTIC({conEmpresa, conSucursal}: {conEmpresa?: boolean, conSucursal?: boolean}) {
         //Contacto OTIC EMPRESA
         if (conEmpresa) {
-            await this.setContacto('Marlene Urtubia Maldonado', '#pn_id_22');
-            await this.setContacto('Kay Camus Caro', '#pn_id_24');
+            await this.setContacto({nombreContacto: 'Marlene Urtubia Maldonado', tipoContacto: 'ejecutivo consultor'});
+            await this.setContacto({nombreContacto: 'Alejandra Retamal Diaz', tipoContacto: 'asistente comercial'});
         }
         
         await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
@@ -273,39 +274,39 @@ export class CrearEmpresa extends BasePage {
         //Contacto OTIC SUCURSAL
         if (conSucursal) {
             // Sucursal principal
-            await this.setContacto('Daniela Gutierrez Troncoso', '#pn_id_25');
+            await this.setContacto({nombreContacto: 'Daniela Gutierrez Troncoso', tipoContacto: 'ejecutivo consultor'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal Sucursal Principal')
-            await this.setContacto('Patricia Almonacid Baez', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Patricia Almonacid Baez', tipoContacto: 'asistente comercial'});
             // await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Viña del Mar');
 
             // 1ª Sucursal en el listado
             await this.selectSucursalOTIC('Carga Masiva Sucursal 01');
-            await this.setContacto('Ana Andaur Adriazola', '#pn_id_25');
+            await this.setContacto({nombreContacto: 'Ana Andaur Adriazola', tipoContacto: 'ejecutivo consultor'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 1');
-            await this.setContacto('Alejandra Retamal Diaz', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Alejandra Retamal Diaz', tipoContacto: 'asistente comercial'});
             // await this.page.locator('app-contactos-otic-sucursal select').nth(4).selectOption('Oficina Talca');
 
             // 2ª Sucursal en el listado
             await this.selectSucursalOTIC('Carga Masiva Reparto sucursal 01');
-            await this.setContacto('Rodrigo Lampre Emparan', '#pn_id_25');
+            await this.setContacto({nombreContacto: 'Rodrigo Lampre Emparan', tipoContacto: 'ejecutivo consultor'});
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 2');
-            await this.setContacto('Dannia Morales Munoz', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Dannia Morales Munoz', tipoContacto: 'asistente comercial'});
 
             // 3ª Sucursal en el listado
             await this.selectSucursalOTIC('Sucursal agregada manualmente test');
-            await this.setContacto('Enrique Quiroz', '#pn_id_25');
+            await this.setContacto({nombreContacto: 'Enrique Quiroz', tipoContacto: 'ejecutivo consultor'});
             await this.page.locator('app-contactos-otic-sucursal select').nth(2).selectOption('Oficina Antofagasta');
             await this.page.getByRole('textbox', { name: 'Agente Zonal' }).fill('Agente Zonal 3');
-            await this.setContacto('Michelle Riquelme Alvarez', '#pn_id_27');
+            await this.setContacto({nombreContacto: 'Michelle Riquelme Alvarez', tipoContacto: 'asistente comercial'});
         }
         await this.page.getByRole('button', { name: 'Guardar y continuar' }).click();
     }
 
     async afiliacionYContrato() {
         await this.page.getByRole('tabpanel').locator('select').first().selectOption('Contrato Reactivación');
-        await this.setContacto('Ana Venegas Sepúlveda', '#ejecutivoAfiliacionNombre');
+        await this.setContacto({nombreContacto: 'Ana Venegas Sepúlveda', comboLocator: '#ejecutivoAfiliacionNombre', tipoContacto: 'ejecutivo consultor'});
         await this.page.getByRole('tabpanel').locator('select').nth(2).first().selectOption('Oficina RM OTIC');
-        await this.setContacto('Carlos Segovia Zuñiga', '#ejecutivoMantencionNombre');
+        await this.setContacto({nombreContacto: 'Carlos Segovia Zuñiga', comboLocator: '#ejecutivoMantencionNombre', tipoContacto: 'ejecutivo consultor'});
         await this.page.getByRole('tabpanel').locator('select').nth(2).last().selectOption('Oficina RM OTIC');
         await this.page.getByRole('textbox', { name: 'Nombre Cazador' }).fill('Ejecutivo Cazador Prueba');
         await this.page.getByRole('textbox', { name: '-9' }).nth(2).fill('19339199-0');

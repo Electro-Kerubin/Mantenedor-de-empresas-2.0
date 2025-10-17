@@ -17,15 +17,23 @@ export class BasePage {
             .selectOption(`${sucursalSelection}`);
     }
 
-    async setContacto(nombreContacto: string, comboLocator?: string) {
+    async setContacto({nombreContacto, comboLocator, tipoContacto} : {nombreContacto: string, comboLocator?: string, tipoContacto: string}) {
 
         let combo: string | any;
-
-        if (comboLocator) {
-            combo = this.page.locator(`${comboLocator}`).getByRole('combobox', { name: 'Seleccione un ejecutivo' });
-        } else {
-            combo = this.page.getByRole('combobox', { name: 'Seleccione un ejecutivo' });
+        if (tipoContacto === 'ejecutivo consultor') {
+            if (comboLocator) {
+                combo = this.page.locator(`${comboLocator}`).getByRole('combobox', { name: 'Seleccione un ejecutivo' });
+            } else {
+                combo = this.page.getByRole('combobox', { name: 'Seleccione un ejecutivo' });
+            }
+        } else if (tipoContacto === 'asistente comercial') {
+            if (comboLocator) {
+                combo = this.page.locator(`${comboLocator}`).getByRole('combobox', { name: 'Seleccione un asistente' });
+            } else {
+                combo = this.page.getByRole('combobox', { name: 'Seleccione un asistente' });
+            }
         }
+        
         await combo.click();
 
         const listboxId = await combo.getAttribute('aria-controls');

@@ -100,6 +100,11 @@ test.describe('Finanzas', () => {
       await finanzas.verificarGrilla();
     });
 
+    test('Supervisor | Perfil solo puede editar Datos Bancarios', async ({page}) => {
+      await finanzas.verificarFiltros();
+      await finanzas.verificarGrilla();
+    });
+
   });
 
 

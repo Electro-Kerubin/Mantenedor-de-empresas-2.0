@@ -51,4 +51,8 @@ export class Finanzas extends BasePage {
         await expect(this.page.getByRole('cell', { name: 'Estado' })).toBeVisible({timeout:1000});
         await expect(this.page.getByRole('cell', { name: 'Opciones' })).toBeVisible({timeout:1000});
     }
+
+    async perfilSoloPuedeEditarDatosBancarios({tipoEmpresa} : {tipoEmpresa: string}) {
+        
+    }
 }
