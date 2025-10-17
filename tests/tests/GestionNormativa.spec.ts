@@ -42,6 +42,11 @@ test.describe('Gestion Normativa', () => {
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedorReparto();
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
         });
+
+        test('Jefe de área | Perfil solo debe poder ingrasar a mantenedor de empresas y mantenedor de holding', async ({page}) => {
+            await gestionNormativa.verficiarAccesosUI();
+            await gestionNormativa.verificarAccesosPorURL();
+        });
         
     });
 
@@ -64,6 +69,11 @@ test.describe('Gestion Normativa', () => {
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedorReparto();
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
         });
+
+        test('Coordinador | Perfil solo debe poder ingrasar a mantenedor de empresas y mantenedor de holding', async ({page}) => {
+            await gestionNormativa.verficiarAccesosUI();
+            await gestionNormativa.verificarAccesosPorURL();
+        });
     });
 
     test.describe('Rol: Funcionario', () => {
@@ -84,6 +94,11 @@ test.describe('Gestion Normativa', () => {
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedor();
             await gestionNormativa.verificarVisualizacionDatosBancariosClienteProveedorReparto();
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
+        });
+
+        test('Funcionario | Perfil solo debe poder ingrasar a mantenedor de empresas y mantenedor de holding', async ({page}) => {
+            await gestionNormativa.verficiarAccesosUI();
+            await gestionNormativa.verificarAccesosPorURL();
         });
 
     });
@@ -109,7 +124,10 @@ test.describe('Gestion Normativa', () => {
             await gestionNormativa.verificarVisualizacionDatosBancariosProveedor();
         });
 
-        
+        test('Sub Gerente | Perfil solo debe poder ingrasar a mantenedor de empresas y mantenedor de holding', async ({page}) => {
+            await gestionNormativa.verficiarAccesosUI();
+            await gestionNormativa.verificarAccesosPorURL();
+        });
 
     });
 
