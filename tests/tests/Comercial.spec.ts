@@ -3,16 +3,15 @@ import * as dotenv from 'dotenv';
 import { Util } from "../pages/util";
 import { generarRUT } from "../utils/GeneradorRuts";
 import { APIs } from "../pages/APIs";
+import { Comercial } from "../pages/ComercialPage";
 
 dotenv.config();
-
-
-
 
 test.describe('Comercial', () => {
 
     let rutEmpresa: string;
     let apis: APIs;
+    let comercial: Comercial;
 
     test.afterEach(async ({ page }, testInfo) => {
         if (testInfo.status !== 'passed') {
@@ -30,7 +29,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+
+        test('Sub Gerente | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Jefe de Oficina', () => {
@@ -43,7 +50,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+
+        test('Jefe de Oficina | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Asistente Comercial', () => {
@@ -56,7 +71,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+        
+        test('Asistente Comercial | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Ejecutivo Consultor', () => {
@@ -69,7 +92,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+        
+        test('Ejecutivo Consultor | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Agente Zonal Norte', () => {
@@ -82,7 +113,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+        
+        test('Agente Zonal Norte | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({zonaAgente: "Norte"});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Agente Zonal Metro', () => {
@@ -95,7 +134,15 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+        
+        test('Agente Zonal Metro | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 
     test.describe('Rol: Agente Zonal Sur', () => {
@@ -108,6 +155,14 @@ test.describe('Comercial', () => {
             const util = new Util(page);
             await util.segundoLogin();
             await expect(page).toHaveURL(/private\/mantenedor-empresa/);
-        });    
+        });
+        
+        test('Agente Zonal Sur | Perfil no debe poder descargar el certificado de Datos bancarios', async ({ page }) => {
+            const comercial = new Comercial(page);
+            const {cliProvDisabled, provDisabled} = await comercial.verificarRestriccionDescargaCertificadoDatosBancarios({zonaAgente: "Sur"});
+            
+            expect.soft(cliProvDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+            expect.soft(provDisabled, 'El cliente-proveedor posee los botones de visualizar o descargar disponibles').not.toBeTruthy();
+        });
     });
 });

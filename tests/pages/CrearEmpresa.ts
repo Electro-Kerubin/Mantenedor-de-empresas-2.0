@@ -100,7 +100,7 @@ export class CrearEmpresa extends BasePage {
 
         if (tipoCliente === 'PROVEEDOR') {
             await this.page.getByRole('textbox', { name: 'Nombre / Razón Social' }).fill(generarNombre('PROVEEDOR'));
-            await this.page.getByRole('textbox', { name: '-9' }).fill(generarRUT());
+            // await this.page.getByRole('textbox', { name: '-9' }).fill(generarRUT());
 
             await this.page.getByRole('textbox', { name: 'Ciudad' }).fill('Santiago');
             await this.setDropdownValue({optionValue: 'REGION METROPOLITANA', locatorId: '#pn_id_10', name: 'Selecciona...'});

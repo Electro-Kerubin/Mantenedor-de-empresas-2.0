@@ -9,7 +9,7 @@ export class EditarEmpresa extends BasePage {
         super(page);
     }
 
-    async buscarEmpresa(rutEmpresa: string) {
+    async buscarEmpresa(rutEmpresa: string, visualizar?: boolean, poseeEstado?: boolean) {
 
         for (let i = 0; i <= 10; i++) {
             await this.page.getByRole('textbox', { name: 'Ingrese RUT' }).fill(rutEmpresa);
@@ -17,6 +17,21 @@ export class EditarEmpresa extends BasePage {
             await this.page.getByRole('button', { name: 'Buscar' }).click();
             try {
                 await this.page.waitForTimeout(1000);
+
+                if (visualizar) {
+                    if (await this.page.getByRole('cell', { name: 'Creado' }).isVisible()) {
+                        await this.page.getByRole('cell', { name: 'Icono SVG' }).locator('a').click({ timeout: 0 });
+                        break;
+                    } else if (await this.page.getByRole('cell', { name: 'Completo' }).isVisible()) {
+                        await this.page.getByRole('cell', { name: 'Icono SVG' }).locator('a').click({ timeout: 0 });
+                        break;
+                    } else if (!poseeEstado) {
+                        await this.page.getByRole('cell', { name: 'Icono SVG' }).locator('a').click({ timeout: 0 });
+                        break;
+                    }
+                } else {
+                    
+                }
                 if (await this.page.getByRole('cell', { name: 'Creado' }).isVisible()) {
                     await this.page.getByRole('button', { name: 'Icono SVG' }).click({ timeout: 0 });
                     break;
