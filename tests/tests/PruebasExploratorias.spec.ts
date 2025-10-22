@@ -58,12 +58,12 @@ test.describe('Pruebas Exploratorias', () => {
       expect(cantidadInterlocutores).toBe(1);
     });
 
-    test('Crear | Contacto OTIC | "Replicar a sucursales" solo replica a la primera sucursal, debe replicar a todas', async({ page }) => {
+    test('Crear | Contacto OTIC | "Replicar a sucursales" no replica en la sucursal principal', async({ page }) => {
       const ruts = await prueba.replicarContactoOTICASucursales({rutEmpresa: rutEmpresa, tipoEmpresa: 'CLIENTE', tipoClasificacion: 'CLIENTE OTIC'});
 
       for (let i = 0; i <= ruts.length; i++) {
         expect.soft(ruts[i]).not.toBeNull();
-        expect.soft(ruts[i]).not.toBe('');
+        expect.soft(ruts[i], `Contacto n°${i+1} presenta datos vacios.`).not.toBe('');
       }
 
     });

@@ -63,6 +63,7 @@ export class Prueba extends BasePage{
         await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
         await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() );
 
+        console.log(ruts)
         return ruts;
 
     }
@@ -162,8 +163,23 @@ export class Prueba extends BasePage{
             await this.crearEmpresa.guardar();
             await this.editarEmpresa.buscarEmpresa(rutEmpresa);
             await this.page.getByRole('tab', { name: 'Contactos OTIC' }).click();
-            await this.btnReplicarASucursales();
             await this.btnSiguiente();
+
+            await this.page.locator('p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').first().click();
+            await this.page.locator('div[formgroupname="asistenteComercial"] p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').click();
+
+            await this.selectSucursalOTIC('Carga Masiva Sucursal 01');
+            await this.page.locator('p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').first().click();
+            await this.page.locator('div[formgroupname="asistenteComercial"] p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').click();
+
+            await this.selectSucursalOTIC('Carga Masiva Reparto sucursal 01');
+            await this.page.locator('p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').first().click();
+            await this.page.locator('div[formgroupname="asistenteComercial"] p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').click();
+
+            await this.selectSucursalOTIC('Sucursal agregada manualmente test');
+            await this.page.locator('p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').first().click();
+            await this.page.locator('div[formgroupname="asistenteComercial"] p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').click();
+
             await this.btnGuardarySalir();
 
             await this.editarEmpresa.buscarEmpresa(rutEmpresa);
@@ -184,6 +200,8 @@ export class Prueba extends BasePage{
             await this.selectSucursalOTIC('Sucursal agregada manualmente test');
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).first().inputValue() );
             await ruts.push( await this.page.getByRole('textbox', { name: '-9' }).last().inputValue() ); 
+
+            
 
             return ruts;
 
@@ -213,7 +231,7 @@ export class Prueba extends BasePage{
             await this.btnSiguiente();
             await this.page.getByRole('button', { name: '', exact: true }).click();
             
-            const filas = this.page.getByRole('cell', { name: 'Contacto Sucursal Descargar' });
+            const filas = this.page.locator('#pn_id_42-table tbody.p-datatable-tbody tr');
             const cantidadFilas = await filas.count();
             return cantidadFilas;
 
