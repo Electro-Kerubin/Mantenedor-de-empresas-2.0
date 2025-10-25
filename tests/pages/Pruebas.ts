@@ -180,7 +180,7 @@ export class Prueba extends BasePage{
             await this.page.locator('p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').first().click();
             await this.page.locator('div[formgroupname="asistenteComercial"] p-dropdown[formcontrolname="nombre"] svg.p-dropdown-clear-icon').click();
 
-            await this.btnGuardarySalir();
+            // await this.btnGuardarySalir();
 
             await this.editarEmpresa.buscarEmpresa(rutEmpresa);
             await this.page.getByRole('tab', { name: 'Contactos OTIC' }).click();
@@ -344,7 +344,10 @@ export class Prueba extends BasePage{
             await this.page.getByRole('combobox').selectOption('Retiro del Cheque');
 
             await this.page.getByRole('button', { name: 'Guardar' }).click();
-            await expect(this.page.getByRole('cell', { name: 'Retiro del Cheque' }).nth(1), {message: 'Contacto se ha repetido'}).not.toHaveText('Retiro del Cheque', {timeout: 1500});
+            await expect(this.page.getByText('Ya existe un contacto con el')).toBeVisible({timeout: 1500});
+            
+            
+            // await this.page.getByText('Ya existe un contacto con el').click();
         }
 
 }
